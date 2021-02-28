@@ -4,6 +4,12 @@ require 'openssl'
 require "json"
 
 module OpenWeatherRaoni
+  class OpenWeatherApiError < StandardError; 
+    def initialize(message)
+      super(message)
+    end
+  end
+
   class OpenWeatherMapApi
 
     def initialize key
@@ -15,11 +21,11 @@ module OpenWeatherRaoni
       response = ""
       begin
         response = api_five_day_weather city
-      rescue OpenWeatherApiError => e
+      rescue OpenWeatherRaoni::OpenWeatherApiError => e
         e.inspect
         return {
-          error => true,
-          message => e.message
+          :error => true,
+          :message => e.message
         }
       end
       forecasts = response["list"]
@@ -75,10 +81,10 @@ module OpenWeatherRaoni
       if response.code != "500"
         body = JSON.parse(response.read_body)
         if response.code != "200"
-          raise OpenWeatherApiError.new body["message"]
+          raise OpenWeatherRaoni::OpenWeatherApiError.new body["message"]
         end
       else
-        raise OpenWeatherApiError.new "Could not reach server"
+        raise OpenWeatherRaoni::OpenWeatherApiError.new "Could not reach server"
       end
   
       return body
