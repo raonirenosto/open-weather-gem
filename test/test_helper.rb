@@ -8,6 +8,10 @@ def load_five_days_response_sample
   File.read("#{__dir__}/sample/five_days_response_sample.json")
 end
 
+def load_five_days_exception_sample
+  File.read("#{__dir__}/sample/five_days_exception_sample.json")
+end
+
 def load_current_weather_response_sample
   File.read("#{__dir__}/sample/current_weather_sample.json")
 end

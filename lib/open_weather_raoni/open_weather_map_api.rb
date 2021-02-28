@@ -72,7 +72,6 @@ module OpenWeatherRaoni
       response = http.request(request)
 
       body = ""
-
       if response.code != "500"
         body = JSON.parse(response.read_body)
         if response.code != "200"
@@ -100,7 +99,9 @@ module OpenWeatherRaoni
       grouped_list =  list.group_by { |g| g["dt_txt"].split[0] }
       
       # ignore today
-      grouped_list.shift
+      if (grouped_list.size > 5)
+        grouped_list.shift
+      end
       
       grouped_list.each do |date, list|
         temperature_average = calculate_temperature_average list
@@ -116,7 +117,7 @@ module OpenWeatherRaoni
         :list => forecasts
       }
 
-      return forecasts
+      return response
     end
 
     def calculate_temperature_average list
