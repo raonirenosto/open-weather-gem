@@ -1,8 +1,10 @@
 # OpenWeatherRaoni
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/open_weather_raoni`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem has two features:
+- Retrieve the current forecast for a given city
+- Retrieve the next 5 days forecast for a given city.
 
-TODO: Delete this and the text above, and describe your gem
+This gem uses the Open Weather Map API (https://openweathermap.org)
 
 ## Installation
 
@@ -22,7 +24,38 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require "open_weather_raoni/open_weather_map_api"
+```
+
+```ruby
+open_weather_api = OpenWeatherRaoni::OpenWeatherMapApi.new #your_open_weather_map_key
+```
+
+Get a city current weather:
+```ruby
+forecast = open_weather_api.current_weather "pato branco,BR"
+
+puts forecast[:temperature]
+puts forecast[:weather]
+```
+
+Get a city next 5 days forecast:
+```ruby
+result = open_weather_api.next_five_days_forecast "pato branco,BR"
+
+result[:list].each do |forecast|
+    puts forecast[:temperature_average]
+    puts forecast[:date]
+end
+```
+
+Handling API errors:
+```ruby
+if result[:error]
+    puts result[:message]
+end
+```
 
 ## Development
 
@@ -32,7 +65,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/open_weather_raoni.
+Bug reports and pull requests are welcome on GitHub at https://github.com/raonirenosto/open_weather_raoni.
 
 ## License
 
