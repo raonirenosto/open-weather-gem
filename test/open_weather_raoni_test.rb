@@ -6,8 +6,8 @@ class OpenWeatherRaoniTest < Minitest::Test
 
   def test_next_five_days_weather 
     @open_weather_api = OpenWeatherRaoni::OpenWeatherMapApi.new("any")
-    url = "https://community-open-weather-map.p.rapidapi.com/forecast" +
-        "?q=pato%20branco,BR&units=metric"
+    url = "https://api.openweathermap.org/data/2.5/forecast" +
+      "?appid=any&q=pato%20branco,BR&units=metric"
     stub_request(:get, url).to_return(body: load_five_days_response_sample)
     
     response = @open_weather_api.next_five_days_forecast "pato branco,BR"
@@ -35,8 +35,8 @@ class OpenWeatherRaoniTest < Minitest::Test
     # in the requrest. This scenario is going to be tested as well.
 
     @open_weather_api = OpenWeatherRaoni::OpenWeatherMapApi.new("any")
-    url = "https://community-open-weather-map.p.rapidapi.com/forecast" +
-        "?q=pato%20branco,BR&units=metric"
+    url = "https://api.openweathermap.org/data/2.5/forecast" +
+      "?appid=any&q=pato%20branco,BR&units=metric"
     stub_request(:get, url).to_return(body: load_five_days_exception_sample)
     
     response = @open_weather_api.next_five_days_forecast "pato branco,BR"
@@ -46,8 +46,8 @@ class OpenWeatherRaoniTest < Minitest::Test
 
   def test_current_weather
     @open_weather_api = OpenWeatherRaoni::OpenWeatherMapApi.new("any")
-    url = "https://community-open-weather-map.p.rapidapi.com/weather" +
-        "?lang=pt_br&q=pato%20branco,BR&units=metric"
+    url = "https://api.openweathermap.org/data/2.5/weather" +
+      "?appid=any&lang=pt_br&q=pato%20branco,BR&units=metric"
     stub_request(:get, url).to_return(body: load_current_weather_response_sample)
     
     response = @open_weather_api.current_weather "pato branco,BR"

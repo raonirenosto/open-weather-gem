@@ -14,7 +14,7 @@ module OpenWeatherRaoni
 
     def initialize key
       @api_key = key
-      @api_link = "https://community-open-weather-map.p.rapidapi.com"
+      @api_link = "https://api.openweathermap.org/data/2.5"
     end
 
     def next_five_days_forecast city 
@@ -47,19 +47,25 @@ module OpenWeatherRaoni
 
     def api_current_weather city
       endpoint = "/weather"
-      city_param = "?q=#{city}"
+      encoded_city = URI.encode_www_form_component(city)
+      city_param = "?q=#{encoded_city}"
       unit_param = "&units=metric"
       language = "&lang=pt_br"
-      composed_url = @api_link + endpoint + city_param + unit_param + language
+      api_key_param = "&appid=#{@api_key}"
+      composed_url = @api_link + endpoint + city_param + 
+        unit_param + language + api_key_param
 
       call_open_weather_api composed_url
     end
 
     def api_five_day_weather city
       endpoint = "/forecast"
-      city_param = "?q=#{city}"
+      encoded_city = URI.encode_www_form_component(city)
+      city_param = "?q=#{encoded_city}"
       unit_param = "&units=metric"
-      composed_url = @api_link + endpoint + city_param + unit_param
+      api_key_param = "&appid=#{@api_key}"
+      composed_url = @api_link + endpoint + city_param + 
+        unit_param + api_key_param
 
       call_open_weather_api composed_url
     end
@@ -72,8 +78,6 @@ module OpenWeatherRaoni
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       
       request = Net::HTTP::Get.new(url)
-      request["x-rapidapi-key"] = @api_key
-      request["x-rapidapi-host"] = 'community-open-weather-map.p.rapidapi.com'
       
       response = http.request(request)
 
